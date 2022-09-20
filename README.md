@@ -17,7 +17,7 @@
 
 # Download & Setup Instructions
 
-- 1 - Clone project: git clone https://github.com/mohammednudman/WoodStreet.git
+- 1 - Clone this project
 - 2 - cd woodstreet
 - 3 - Create virtual environment: virtualenv myenv
 - 4 - myenv\scripts\activate
