@@ -1,0 +1,7 @@
+/frontend/node_modules
+/Include
+/Lib
+/Scripts
+/pyvenv.cfg
+/backend/__pycache__
+/base/__pycache__
