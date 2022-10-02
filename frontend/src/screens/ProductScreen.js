@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
@@ -29,8 +29,8 @@ function ProductScreen({ match, history }) {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [imageDimensions, setImageDimensions] = useState({
-    width: 0,
-    height: 0,
+    width: 700,
+    height: 700,
   });
 
   const parentContainerRef = useRef(null);
@@ -75,54 +75,17 @@ function ProductScreen({ match, history }) {
     );
   };
 
-  // useEffect(() => {
-  //   const resizeObserver = new ResizeObserver((entries) => {
-  //     // this callback gets executed whenever the size changes
-  //     // when size changes get the width and update the state
-  //     // so that the Child component can access the updated width
-  //     for (let entry of entries) {
-  //       if (entry.contentRect) {
-  //         setImageDimensions({
-  //           width: entry.contentRect.offsetHeight,
-  //           height: entry.contentRect.offsetHeight,
-  //         });
-  //       }
-  //     }
-  //   });
+  useEffect(() => {
+    if (parentContainerRef.current) {
+      let parentHeight = parentContainerRef.current.offsetHeight;
+      let parentWidth = parentContainerRef.current.offsetWidth;
 
-  //   // register the observer for the div
-  //   parentContainerRef?.current &&
-  //     resizeObserver.observe(parentContainerRef?.current);
-
-  //   // unregister the observer
-  //   return () =>
-  //     parentContainerRef?.current &&
-  //     resizeObserver.unobserve(parentContainerRef?.current);
-  // }, [parentContainerRef]);
-
-  // useEffect(() => {
-  //   if (parentContainerRef.current) {
-  //     let parentHeight = parentContainerRef.current.offsetHeight;
-  //     let parentWidth = parentContainerRef.current.offsetWidth;
-
-  //     setImageDimensions({
-  //       width: parentWidth,
-  //       height: parentHeight,
-  //     });
-  //   }
-  // }, [parentContainerRef]);
-
-  // useEffect(() => {
-  //   if (colContainerRef.current) {
-  //     let parentHeight = colContainerRef.current.offsetHeight;
-  //     let parentWidth = colContainerRef.current.offsetWidth;
-
-  //     setImageDimensions({
-  //       width: parentWidth,
-  //       height: parentHeight,
-  //     });
-  //   }
-  // }, [colContainerRef]);
+      setImageDimensions({
+        width: parentWidth,
+        height: parentHeight,
+      });
+    }
+  }, []);
 
   return (
     <div>
@@ -136,23 +99,23 @@ function ProductScreen({ match, history }) {
       ) : (
         <div>
           <Row>
-            <Col md={6} ref={colContainerRef}>
+            <Col md={6} ref={parentContainerRef}>
               {/* <Image src={product.image} alt={product.name} fluid /> */}
               <Container fluid>
-                {/* <Zoom
+                <Zoom
                   img={product.image}
                   zoomScale={3}
-                  width={bounds.width}
-                  height={bounds.height}
+                  width={imageDimensions.width}
+                  height={imageDimensions.width * (9 / 16)}
                   transitionTime={0.5}
-                /> */}
-                <ReactImageZoom
-                  img={product.image}
-                  width={bounds.width}
-                  // height={bounds.height}
-                  zoomWidth={bounds.width}
-                  zoomPosition='original'
                 />
+                {/* <ReactImageZoom
+                  img={product?.image}
+                  width={imageDimensions.width}
+                  height={imageDimensions.height}
+                  zoomWidth={imageDimensions.width}
+                  zoomPosition='original'
+                /> */}
               </Container>
             </Col>
 
@@ -170,7 +133,7 @@ function ProductScreen({ match, history }) {
                   />
                 </ListGroup.Item>
 
-                <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
+                <ListGroup.Item>Price: ₹{product.price}</ListGroup.Item>
 
                 <ListGroup.Item>
                   Description: {product.description}
